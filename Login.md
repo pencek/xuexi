@@ -205,7 +205,10 @@ todd@Login:~$ id
 uid=1001(todd) gid=1001(todd) groups=1001(todd)
 ```
 
-提权
+提权：用户 todd 可以在本机上 无密码 (NOPASSWD) 执行 /usr/bin/hg，而且权限是 (ALL)，也就是可以以 root 的身份运行。hg 是 版本控制工具 (类似 Git)，它支持配置别名 (alias)，而且别名可以绑定到 外部命令。
+--config alias.foo='!bash'：定义了一个临时的 alias 命令 foo，执行时跑 /bin/bash。
+sudo hg ...：因为是 sudo 执行，所以这个 bash 就是 root 权限的。
+foo：调用 alias，触发 bash。
 
 ```
 todd@Login:~$ sudo -l
