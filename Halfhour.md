@@ -914,7 +914,7 @@ HTTP/1.1 200 OK
 
 看一下/wp-login.php，再根据刚才1337和1338端口给的bobobo成功登录(刚才打不开是因为clash....)
 
-![[Pasted image 20250917163829.png]]
+![Uploading Pasted image 20250917163829.png…]()
 
 写一个反弹shell，进行压缩，然后通过插件模块进行上传，启动插件就可以拿到反弹shell
 
